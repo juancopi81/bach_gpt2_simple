@@ -1,0 +1,23 @@
+# The program to run
+program: train.py
+
+# Method can be grid, random or bayes
+method: random
+
+# Project this sweep is part of
+project: mlops-001-bachGPT
+
+# Metric to optimize
+metric:
+  name: eval_loss
+  goal: minimize
+
+
+# Parameters space to search
+parameters:
+  learning_rate:
+    distribution: log_uniform_values
+    min: 5e-4
+    max: 5e-2
+  per_device_train_batch_size:
+    values: [16, 32, 64, 128]
