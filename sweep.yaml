@@ -7,12 +7,6 @@ method: random
 # Project this sweep is part of
 project: mlops-001-bachGPT
 
-# Metric to optimize
-metric:
-  name: accuracy
-  goal: maximize
-
-
 # Parameters space to search
 parameters:
   learning_rate:
