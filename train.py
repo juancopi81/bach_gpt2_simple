@@ -9,6 +9,7 @@ from transformers import TrainingArguments
 from transformers import AutoConfig, GPT2LMHeadModel
 import evaluate
 import wandb
+import numpy as np
 
 import params
 from customtrainer import CustomTrainer
@@ -203,8 +204,9 @@ def create_model(tokenizer):
 
 def compute_metrics_fn(eval_pred):
     accuracy_metric = evaluate.load("accuracy")
-    references, labels = eval_pred
-    return accuracy_metric.compute(references=references, predictions=labels)
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return accuracy_metric.compute(references=labels, predictions=predictions)
 
 
 def train(train_config):
