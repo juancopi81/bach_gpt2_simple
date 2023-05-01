@@ -203,12 +203,14 @@ def create_model(tokenizer):
 
 
 def compute_metrics_fn(eval_pred):
+    metrics = dict()
     accuracy_metric = evaluate.load("accuracy")
     logits, labels = eval_pred
     print(len(logits))
     print(len(labels))
     predictions = np.argmax(logits, axis=-1)
-    return accuracy_metric.compute(references=labels, predictions=predictions)
+    metrics.update(accuracy_metric.compute(references=labels, predictions=predictions))
+    return metrics
 
 
 def train(train_config):
