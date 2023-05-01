@@ -7,6 +7,7 @@ from transformers import DataCollatorForLanguageModeling
 from transformers import set_seed
 from transformers import TrainingArguments
 from transformers import AutoConfig, GPT2LMHeadModel
+import evaluate
 import wandb
 
 import params
@@ -200,6 +201,12 @@ def create_model(tokenizer):
     return model
 
 
+def compute_metrics_fn(eval_pred):
+    accuracy_metric = evaluate.load("accuracy")
+    references, labels = eval_pred
+    return accuracy_metric.compute(references=references, predictions=labels)
+
+
 def train(train_config):
     config = vars(train_config)
     set_seed(config["seed"])
@@ -218,6 +225,7 @@ def train(train_config):
         data_collator=data_collator,
         train_dataset=tokenized_datasets["train"],
         eval_dataset=tokenized_datasets["test"],
+        compute_metrics=compute_metrics_fn,
     )
     trainer.train()
     wandb.finish()
