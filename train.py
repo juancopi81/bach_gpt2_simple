@@ -205,6 +205,8 @@ def create_model(tokenizer):
 def compute_metrics_fn(eval_pred):
     accuracy_metric = evaluate.load("accuracy")
     logits, labels = eval_pred
+    print(len(logits))
+    print(len(labels))
     predictions = np.argmax(logits, axis=-1)
     return accuracy_metric.compute(references=labels, predictions=predictions)
 
