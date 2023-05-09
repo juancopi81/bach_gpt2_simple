@@ -207,9 +207,19 @@ def compute_metrics_fn(eval_pred):
     accuracy_metric = evaluate.load("accuracy")
     logits, labels = eval_pred.predictions, eval_pred.label_ids
     predictions = np.argmax(logits, axis=-1)
+
     # Assuming that 'predictions' and 'labels' are 2D arrays of shape (num_samples, sequence_length)
-    predictions_dict = {"predictions": predictions.astype("int32")}
-    references_dict = {"references": labels.astype("int32")}
+    num_samples, sequence_length = predictions.shape
+    print(f"num_sample: {num_samples}, sequence_length: {sequence_length}")
+
+    # Flatten the predictions and labels to match the expected format
+    flat_predictions = predictions.flatten()  # Shape: (num_samples * sequence_length,)
+    flat_labels = labels.flatten()  # Shape: (num_samples * sequence_length,)
+
+    # Create dictionaries with flattened predictions and labels
+    predictions_dict = {"predictions": flat_predictions.astype("int32")}
+    references_dict = {"references": flat_labels.astype("int32")}
+
     metrics.update(
         accuracy_metric.compute(
             references=references_dict, predictions=predictions_dict
