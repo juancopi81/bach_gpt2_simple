@@ -217,9 +217,7 @@ def compute_metrics_fn(eval_pred):
     flat_labels = labels.flatten()  # Shape: (num_samples * sequence_length,)
 
     metrics.update(
-        accuracy_metric.compute(
-            references=flat_labels, predictions=flat_predictions
-        )
+        accuracy_metric.compute(references=flat_labels, predictions=flat_predictions)
     )
     return metrics
 
