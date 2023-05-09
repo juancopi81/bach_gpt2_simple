@@ -205,7 +205,7 @@ def create_model(tokenizer):
 def compute_metrics_fn(eval_pred):
     metrics = dict()
     accuracy_metric = evaluate.load("accuracy")
-    logits, labels = eval_pred
+    logits, labels = eval_pred.predictions, eval_pred.label_ids
     predictions = np.argmax(logits, axis=-1)
     # Assuming that 'predictions' and 'labels' are 2D arrays of shape (num_samples, sequence_length)
     predictions_dict = {"predictions": predictions.astype("int32")}
