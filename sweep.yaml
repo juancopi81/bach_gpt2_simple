@@ -9,7 +9,7 @@ project: mlops-001-bachGPT
 
 # Metric to optimize
 metric:
-  name: accuracy
+  name: eval/loss
   goal: maximize
 
 # Parameters space to search
