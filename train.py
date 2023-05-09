@@ -216,13 +216,9 @@ def compute_metrics_fn(eval_pred):
     flat_predictions = predictions.flatten()  # Shape: (num_samples * sequence_length,)
     flat_labels = labels.flatten()  # Shape: (num_samples * sequence_length,)
 
-    # Create dictionaries with flattened predictions and labels
-    predictions_dict = {"predictions": flat_predictions.astype("int32")}
-    references_dict = {"references": flat_labels.astype("int32")}
-
     metrics.update(
         accuracy_metric.compute(
-            references=references_dict, predictions=predictions_dict
+            references=flat_labels, predictions=flat_predictions
         )
     )
     return metrics
