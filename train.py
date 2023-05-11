@@ -39,6 +39,7 @@ default_config = SimpleNamespace(
     load_best_model_at_end=True,
     report_to="wandb",
     prediction_loss_only=False,
+    push_to_hub=False,
 )
 
 
@@ -145,6 +146,12 @@ def parse_args():
         default=default_config.prediction_loss_only,
         help="prediction loss only",
     )
+    argparser.add_argument(
+        "--push_to_hub",
+        type=bool,
+        default=default_config.push_to_hub,
+        help="push model to HF hub",
+    )
     args = argparser.parse_args()
     vars(default_config).update(vars(args))
     return
@@ -243,6 +250,8 @@ def train(train_config):
         compute_metrics=compute_metrics_fn,
     )
     trainer.train()
+    if config["push_to_hub"]:
+        trainer.push_to_hub()
     wandb.finish()
 
 
