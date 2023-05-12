@@ -252,7 +252,7 @@ def train(train_config):
     trainer.train()
     if config["push_to_hub"]:
         trainer.push_to_hub()
-        model_wandb = wandb.Artifact(name="trained_model_ckpt")
+        model_wandb = wandb.Artifact(name="trained_model_ckpt", type="model_checkpoint")
         model_wandb.add_file("config.json")
         model_wandb.add_file("generation_config.json")
         model_wandb.add_file("pytorch_model.bin")
