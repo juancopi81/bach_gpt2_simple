@@ -252,7 +252,16 @@ def train(train_config):
     trainer.train()
     if config["push_to_hub"]:
         trainer.push_to_hub()
-    wandb.finish()
+        model_wandb = wandb.Artifact(name="trained_model_ckpt")
+        model_wandb.add_file("config.json")
+        model_wandb.add_file("generation_config.json")
+        model_wandb.add_file("pytorch_model.bin")
+        model_wandb.add_file("special_tokens_map.json")
+        model_wandb.add_file("tokenizer.json")
+        model_wandb.add_file("tokenizer_config.json")
+        model_wandb.add_file("training_args.bin")
+        run.log_artifact(model_wandb)
+    run.finish()
 
 
 if __name__ == "__main__":
