@@ -213,11 +213,9 @@ def compute_metrics_fn(eval_pred):
     metrics = dict()
     accuracy_metric = evaluate.load("accuracy")
     logits, labels = eval_pred.predictions, eval_pred.label_ids
+    not_pad_mask = labels != -100
+    logits, labels = logits[not_pad_mask], labels[not_pad_mask]
     predictions = np.argmax(logits, axis=-1)
-
-    # Assuming that 'predictions' and 'labels' are 2D arrays of shape (num_samples, sequence_length)
-    num_samples, sequence_length = predictions.shape
-    print(f"num_sample: {num_samples}, sequence_length: {sequence_length}")
 
     # Flatten the predictions and labels to match the expected format
     flat_predictions = predictions.flatten()  # Shape: (num_samples * sequence_length,)
